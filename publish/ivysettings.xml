@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ivysettings>
+	<settings defaultResolver="SalesBUILDER"/>
+	<caches>
+	  	<cache name="downloads" basedir="${user.home}/ivy_downloads" />
+	</caches> 
+	<resolvers>
+		<chain name="SalesBUILDER" returnFirst="true">
+			<!-- For 3rd party binaries -->
+            <sftp 	name="sftp-3rdParty" cache="downloads"
+					user="${sftp.repository.user}"
+					userPassword="${sftp.repository.password}"
+					host="${sftp.repository.host}"
+					port="${sftp.repository.port}">
+				
+                <ivy pattern="[organisation]/[module]/ivys/ivy-[revision].xml"/>
+                <artifact pattern="[organisation]/[module]/[type]s/[artifact]-[revision].[ext]"/>
+            </sftp>
+        </chain>
+	</resolvers>
+</ivysettings>

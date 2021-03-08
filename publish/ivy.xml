@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ivy-module version="1.0">
+
+	<info module="spark-core" organisation="com.sparkjava">
+	</info>
+	
+	<publications>
+		<artifact ext="jar" name="spark-core" type="jar"/>
+	</publications>
+
+</ivy-module>
