@@ -63,11 +63,9 @@ public abstract class FilterImpl implements Filter, Wrapper {
      * @param filter     the filter
      * @return the wrapped route
      */
-    public static FilterImpl create(final String path, String acceptType, final Filter filter) {
-        if (acceptType == null) {
-            acceptType = DEFAULT_ACCEPT_TYPE;
-        }
-        return new FilterImpl(path, acceptType, filter) {
+    public static FilterImpl create(final String path, final String acceptType, final Filter filter) {
+        String acceptTypeToUse = acceptType == null ? DEFAULT_ACCEPT_TYPE : acceptType;
+        return new FilterImpl(path, acceptTypeToUse, filter) {
             @Override
             public void handle(Request request, Response response) throws Exception {
                 filter.handle(request, response);
