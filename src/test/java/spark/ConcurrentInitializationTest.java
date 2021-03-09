@@ -1,8 +1,6 @@
 package spark;
 
 import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +15,7 @@ import static spark.Spark.get;
 
 public class ConcurrentInitializationTest {
 
-    private static final int NUM_HANDLERS = 10000;
+    private static final int NUM_HANDLERS = 10_000;
     private static final Logger LOGGER = LoggerFactory.getLogger(ConcurrentInitializationTest.class);
 
     private volatile boolean isClientRunning = true;
@@ -33,8 +31,8 @@ public class ConcurrentInitializationTest {
         while (isClientRunning) {
             try {
                 SparkTestUtil.UrlResponse response = testUtil.doMethod("GET", "/healthcheck", null);
-                Assert.assertEquals(200, response.status);
-                Assert.assertEquals("Hello World!", response.body);
+                assertEquals(200, response.status);
+                assertEquals("Hello World!", response.body);
                 latch.countDown();
             } catch (Exception | Error e) {
                 exceptionList.add(e);
@@ -53,7 +51,7 @@ public class ConcurrentInitializationTest {
     }
 
     @Test
-    public void testInitialization() throws InterruptedException {
+    public void testInitialization() throws Exception {
         CountDownLatch latch = new CountDownLatch(5);
         List<Object> exceptionList = new ArrayList<>();
         get("/healthcheck", (q, a) -> "Hello World!");
