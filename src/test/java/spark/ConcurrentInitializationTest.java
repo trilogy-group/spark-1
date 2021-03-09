@@ -1,7 +1,9 @@
 package spark;
 
 import org.junit.AfterClass;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ErrorCollector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.util.SparkTestUtil;
@@ -10,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.CoreMatchers.equalTo;
 import static spark.Spark.get;
 
 public class ConcurrentInitializationTest {
@@ -20,6 +22,8 @@ public class ConcurrentInitializationTest {
 
     private volatile boolean isClientRunning = true;
 
+    @Rule
+    public final ErrorCollector collector = new ErrorCollector();
 
     /**
      * Simulates the client which check the server health check awaiting for it to be up and running,
@@ -31,8 +35,8 @@ public class ConcurrentInitializationTest {
         while (isClientRunning) {
             try {
                 SparkTestUtil.UrlResponse response = testUtil.doMethod("GET", "/healthcheck", null);
-                assertEquals(200, response.status);
-                assertEquals("Hello World!", response.body);
+                collector.checkThat(response.status, equalTo(200));
+                collector.checkThat(response.body, equalTo("Hello World!"));
                 latch.countDown();
             } catch (Exception | Error e) {
                 exceptionList.add(e);
@@ -62,7 +66,7 @@ public class ConcurrentInitializationTest {
         initHandlers();
         isClientRunning = false;
         clientThread.join();
-        assertEquals(0, exceptionList.size());
+        collector.checkThat(exceptionList.size(), equalTo(0));
     }
 
     @AfterClass
