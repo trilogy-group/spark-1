@@ -15,9 +15,9 @@
             </fileset>
         </copy>
         <ivy:publish 
-            artifactspattern="${ivyexports}/spark-core-2.9.4-SNAPSHOT.jar"
+            artifactspattern="${ivyexports}/spark-core-2.9.5-SNAPSHOT.jar"
             overwrite="true"
-            pubrevision="2.9.4"
+            pubrevision="2.9.5"
             resolver="sftp-3rdParty"
 			forcedeliver="true"
 			update="true"
